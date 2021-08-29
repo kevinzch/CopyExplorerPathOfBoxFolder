@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Copy explore path of Box folder
 // @description  Add a button on Box website that can copy explorer path of Box folder.
-// @namespace    
+// @namespace    https://github.com/kevinzch/Copy-explorer-path-of-Box-folder
 // @version      0.1
-// @downloadURL  
+// @downloadURL  https://github.com/kevinzch/Copy-explorer-path-of-Box-folder/raw/main/CopyExplPathofBox.user.js
 // @author       Kevin
 // @include      https://app.box.com/folder/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
