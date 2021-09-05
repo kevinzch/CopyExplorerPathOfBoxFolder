@@ -45,10 +45,10 @@
                         for (let item of list){
                             text += item.textContent + "\\";
                         }
-                    },200);
 
-                    // Click again to hide menu
-                    hiddenPathButton.click();
+                        // Click again to hide menu
+                        hiddenPathButton.click();
+                    },200);
                 }
 
                 setTimeout(function() {
