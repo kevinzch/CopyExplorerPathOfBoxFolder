@@ -2,8 +2,7 @@
 // @name         Copy explorer path of Box folder
 // @description  Add a button on Box website that can copy explorer path of Box folder.
 // @namespace    https://github.com/kevinzch/Copy-explorer-path-of-Box-folder
-// @version      0.2
-// @downloadURL  https://github.com/kevinzch/Copy-explorer-path-of-Box-folder/raw/main/CopyExplPathofBox.user.js
+// @version      0.3
 // @author       Kevin
 // @include      https://app.box.com/folder/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
@@ -16,55 +15,64 @@
 
     const copyExplorerPath = () => {
         try {
+            // Create button and set button style
             let copyBtn = document.createElement('button');
+
+            let searchBar = document.querySelector('.header-search.prevent-item-deselection.HeaderSearch-isNewQuickSearch');
+
+            // Make basis of url
+            const apiUrl = 'app-api/enduserapp/folder/';
+            let appHost = Box.prefetchedData['/app-api/enduserapp/current-user'].preview.appHost;
+
+            // Request
+            let request = new XMLHttpRequest();
+
+            // Empty Variables which will be reused in click event
+            let folderId = '';
+            let fullUrl = '';
+            let explorerPath = '';
+            let jsonObj = null;
+            let length = 0;
+
+            // Set button style
             copyBtn.textContent = 'フォルダパスをコピー';
             copyBtn.style.backgroundColor = '#4baf4f';
             copyBtn.style.color = 'white';
             copyBtn.style.borderRadius = '8px';
             copyBtn.style.padding = '0px 20px';
 
-            let searchbar = document.querySelector('.header-search.prevent-item-deselection.HeaderSearch-isNewQuickSearch');
-            searchbar.appendChild(copyBtn);
+            // Add button to document
+            searchBar.appendChild(copyBtn);
 
+            // Add button click listner
             copyBtn.addEventListener('click', function(){
-                // Set menu button
-                let hiddenPathButton = document.querySelector('button.btn-plain.ItemListBreadcrumbOverflow-menuButton');
-                let topOfBreadcrumbList = document.querySelector('ol.ItemListBreadcrumb-list');
-                let breadcrumb = topOfBreadcrumbList.querySelectorAll('[class=ItemListBreadcrumb-listItem]');
-                let lastBreadcrumb = topOfBreadcrumbList.querySelector('.ItemListBreadcrumb-listItem.is-last>.ItemListBreadcrumb-currentItemTitle');
-                let text = "Box\\";
+                // Reget folderID and remake full url
+                folderId = document.URL.split('/').pop();
+                fullUrl = appHost + apiUrl + folderId;
 
-                // Click menu button only if it exists
-                if ( hiddenPathButton ){
-                    hiddenPathButton.click();
+                // Clear explorer path
+                explorerPath = 'Box';
 
-                    setTimeout(function() {
-                        let hiddenList = document.querySelector('div.dropdown-menu-element.dropdown-menu-enabled');
-                        let list = hiddenList.querySelectorAll('[data-resin-target=openfolder]');
+                request.open('GET', fullUrl, false);
+                request.send();
+                jsonObj = JSON.parse(request.responseText);
 
-                        for (let item of list){
-                            text += item.textContent + "\\";
-                        }
+                length = jsonObj.folder.path.length;
 
-                        // Click again to hide menu
-                        hiddenPathButton.click();
-                    },200);
-                }
-
-                setTimeout(function() {
-                    for (let item of breadcrumb){
-                        text += item.textContent + "\\";
+                for (let i = 0; i < length; i++){
+                    // Skip 'All files'
+                    if (i == 0){
+                        continue;
                     }
-
-                    text += lastBreadcrumb.textContent;
-                    text = text.replace("All Files\\", "");
-                    text = text.replace("すべてのファイル\\", "");
-                    navigator.clipboard.writeText(text);
-                    alert("下記のパスをコピーしました。\r\n" + text);
-                },200);
-
+                    else{
+                        explorerPath += '\\' + jsonObj.folder.path[i].name;
+                    }
+                }
+                navigator.clipboard.writeText(explorerPath);
+                alert("下記のパスをコピーしました:\r\n" + explorerPath);
             })
-        } catch (e) {
+        }
+        catch (e) {
             setTimeout(() => {
                 copyExplorerPath();
             }, 500);
