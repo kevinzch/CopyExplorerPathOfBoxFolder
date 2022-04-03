@@ -1,16 +1,16 @@
 // ==UserScript==
-// @name Copy explorer path of Box folder
+// @name        Copy explorer path of Box folder
 // @description Add a button on Box website that can copy explorer path of Box folder.
-// @namespace https://github.com/kevinzch/CopyExplorerPathOfBoxFolder
-// @version 0.4.1
-// @license MIT
-// @author Kevin
-// @include https://app.box.com/*
-// @require https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-// @require https://greasyfork.org/scripts/383527-wait-for-key-elements/code/Wait_for_key_elements.js?version=701631
-// @icon data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant none
-// @run-at document-body
+// @namespace   https://github.com/kevinzch/CopyExplorerPathOfBoxFolder
+// @version     0.4.1
+// @license     MIT
+// @author      Kevin
+// @include     https://app.box.com/*
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require     https://greasyfork.org/scripts/383527-wait-for-key-elements/code/Wait_for_key_elements.js?version=701631
+// @icon        data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant       none
+// @run-at      document-body
 // ==/UserScript==
 
 (function() {
@@ -52,6 +52,7 @@
             let length = 0;
 
             // Set button style
+            copyBtn.id = 'copypathbutton';
             copyBtn.textContent = 'Copy path';
             copyBtn.style.backgroundColor = '#4baf4f';
             copyBtn.style.color = 'white';
@@ -59,10 +60,10 @@
             copyBtn.style.padding = '0px 20px';
 
             // Check if current page is folder or file preview
-            if ( document.URL.indexOf('folder') > -1 ){
+            if ( pageUrl.indexOf('folder') > -1 ){
                 itemType = TYPE_FOLDER;
             }
-            else if( document.URL.indexOf('file') > -1 ){
+            else if( pageUrl.indexOf('file') > -1 ){
                 itemType = TYPE_FILE;
             }
             else{
@@ -124,13 +125,7 @@
                 copyExplorerPath();
             }, 500);
         }
-    };
 
-    if ( itemType == TYPE_FOLDER ){
-        waitForKeyElements(".parent-name", copyExplorerPath());
-    }
-    else{
-        ;
     }
 
 })();
