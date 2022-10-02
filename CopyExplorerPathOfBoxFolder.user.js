@@ -2,7 +2,7 @@
 // @name        Copy explorer path of Box folder
 // @description Add a button on Box website that can copy explorer path of Box folder.
 // @namespace   https://github.com/kevinzch/CopyExplorerPathOfBoxFolder
-// @version     0.4.1
+// @version     0.4.2
 // @license     MIT
 // @author      Kevin
 // @include     https://app.box.com/*
@@ -33,7 +33,7 @@
             // Create button and set button style
             let copyBtn = document.createElement('button');
 
-            let searchBox = document.querySelector('.header-search.prevent-item-deselection.HeaderSearch-isNewQuickSearch');
+            let searchBox = document.querySelector('.header-search.prevent-item-deselection.HeaderSearch--isNewQuickSearch');
 
             let itemName = document.querySelector('.item-list-date.item-list-cell');
 
